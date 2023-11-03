@@ -34,7 +34,7 @@ example command with password hidden
 python get_device_configuration.py --username ckim --output-dir configs --server <apstra-ip> --blueprint <blueprint-name>                            
 Password:
 ==== AosServer.http_post() status: 200
-system_label='swl4-02-b'
+system_label='spine1'
 -- Reading rendered configuration
 ...
 
@@ -48,6 +48,18 @@ The folder configs/blueprint-name will have the configuration files
 - <blueprint-name>-configlet.txt
 - <blueprint-name>-configlet-set.txt
 ```
+
+## use it
+
+1. copy over the configuration file to the device
+2. go to edit mode in the device
+3. load override spine1-pristine.txt
+4. load merge spine1.txt
+5. load merget spine1-configlet.txt
+6. load set spine1-configet-set.txt
+7. show | compare
+8. rollback
+9. 
 
 ## stop environment
 
