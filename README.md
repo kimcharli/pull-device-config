@@ -8,8 +8,8 @@ subnet of https://github.com/kimcharli/ck-apstra-api
 git clone git@github.com:kimcharli/pull-device-config.git
 cd pull-device-config
 
-python3 -m venv ~/venv/get-dev-conf
-source ~/venv/get-dev-conf/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt  
 ```
 
