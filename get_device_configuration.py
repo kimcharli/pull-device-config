@@ -132,7 +132,7 @@ def main(server, blueprint, username, password, output_dir):
                 f.write(pristine_config)
 
         rendered_confg = bp.get_node_rendering(system_id)
-        write_to_file(f"{blueprint_dir}/{system_label}-rendered.txt", rendered_confg)
+        # write_to_file(f"{blueprint_dir}/{system_label}-rendered.txt", rendered_confg)
 
         print("-- Reading rendered configuration")
         config_string = rendered_confg.split(begin_configlet)
