@@ -90,6 +90,10 @@ total 408
 Put __all_pristine__ for the blueprint to get all the pristine configurations irrespective of blueprint.
 
 ```
+(.venv) ckim@ckim-mbp:pull-device-config % python get_device_configuration.py --username admin --output-dir configs --server local-apstra.pslab.link --blueprint __all_pristine__
+
+...
+
 (.venv) ckim@ckim-mbp:pull-device-config % ls -l configs/pristine                  
 total 96
 -rw-r--r--@ 1 ckim  staff  5817 Nov 21 14:09 EK069-pristine.txt
