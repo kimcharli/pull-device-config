@@ -7,7 +7,7 @@ import click
 import getpass
 
 PROGNAME = 'get-device-configuration'
-
+ALL_PRISTINE = '__all_pristine__'
 
 class CkAosServer:
     # http
@@ -97,7 +97,7 @@ def write_to_file(file_name, content):
 
 @click.command(name='copy-device-configurations-from-apstra')
 @click.option('--server', help='Apstra server IP address')
-@click.option('--blueprint', help='Apstra blueprint label')
+@click.option('--blueprint', help=f'Apstra blueprint label, or {ALL_PRISTINE}')
 @click.option('--username', default='admin', help='Apstra username')
 @click.option('--password', help='Apstra password')
 @click.option('--output-dir', help='Output directory')
@@ -105,15 +105,27 @@ def main(server, blueprint, username, password, output_dir):
     begin_configlet = '------BEGIN SECTION CONFIGLETS------'
     begin_set = '------BEGIN SECTION SET AND DELETE BASED CONFIGLETS------'
 
+    output_folder_name = output_dir or input('Output directory: ')
     server = server or input('Apstra server IP address: ')
     blueprint = blueprint or input('Apstra blueprint name: ')
     username = username or input('Username: ')
     password = password or getpass.getpass(prompt='Password: ')
 
     server = CkAosServer(server, 443, username, password)
+
+    # to get all pristine configs irrespective of blueprint
+    if blueprint == ALL_PRISTINE:
+        pristine_dir = f"{output_folder_name}/pristine"
+        if not os.path.isdir(pristine_dir):
+            os.makedirs(pristine_dir, exist_ok=True)
+        for system_dict in server.http_get_json("/api/systems")['items']:
+            device_id = system_dict['id']
+            pristine_config = server.http_get_json(f"/api/systems/{device_id}/pristine-config")['pristine_data'][0]['content']
+            write_to_file(f"{pristine_dir}/{device_id}-pristine.txt", pristine_config)
+        return
+
     bp = CkAosBlueprint(server, blueprint)
 
-    output_folder_name = output_dir or input('Output directory: ')
     blueprint_dir = f"{output_folder_name}/{blueprint}"
     if not os.path.isdir(blueprint_dir):
         os.makedirs(blueprint_dir, exist_ok=True)
